@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Material Design Bootstrap</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="css/mdb.min.css" rel="stylesheet">
+    <!-- Data table -->
+    <link href="css/addons/datatables.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="css/style.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!--Main Navigation-->
+    <header>
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light scrolling-navbar">
+            <div class="container">
+
+                <!-- Brand -->
+                <a class="navbar-brand waves-effect" href="https://mdbootstrap.com/material-design-for-bootstrap/" target="_blank">
+                    <strong class="verde-experta-2-text">PAP</strong>
+                </a>
+
+            </div>
+        </nav>
+        <!-- Navbar -->
+
+    </header>
+    <!--Main Navigation-->
+
+    <!--Main layout-->
+    <main class="mt-5 pt-5">
+        <div class="container">
+
+            <section class="text-center">
+
+                <div class="row mb-12 wow fadeIn">
+                    <div class="input-group mb-3">
+                      <!--
+                        <div class="input-group-prepend">
+                          <span class="input-group-text btn-dark-green" id="inputFileCSV">Cargar</span>
+                        </div>
+                      -->
+                        
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputFileCSV">
+                          <label class="custom-file-label" for="inputFileCSV">Seleccione un archivo</label>
+                        </div>
+                      </div>
+                </div>
+
+                <div class="row mb-12 wow fadeIn">
+                    <button type="button" id="btnPredecir" class="btn btn-lg azul-experta col-lg-11 fa fa-upload fa-3x" onclick="fileValidation()"> Predecir</button>
+                </div>
+
+                <div id="loader"></div>
+
+                <div class="row mb-12 wow fadeIn">         
+                  
+                    <table id="dtBasic" class="table table-hover table-lg" cellspacing="0" width="100%">
+                        <thead class="azul-experta-2 white-text">
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">SEVERIDAD 
+                            </th>
+                            <th scope="col">PARTE DEL CUERPO 
+                            </th>
+                            <th scope="col">CAUSA 
+                            </th>
+                            <th scope="col">% JUICIO 
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>Grave</td>
+                            <td>Dedos</td>
+                            <td>Uitilzando maquinaria peligrosa</td>
+                            <td class="red-text">65~100%</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td>Leve</td>
+                            <td>mano</td>
+                            <td>Jugando handball</td>
+                            <td class="green-text">0~45%</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">3</th>
+                            <td>Moderado</td>
+                            <td>Espalda</td>
+                            <td>Cargando cosas pesadas</td>
+                            <td class="orange-text">50~60%</td>
+                          </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <!-- Central Modal Small -->
+        <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div id="modalStyle" class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header ">
+                <h4 class="modal-title w-100" id="myModalLabel"><span id="titleModal"></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <span id="bodyModal"></span> 
+                </div>
+                <!--
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">OK</button>
+                </div>
+                -->
+            </div>
+            </div>
+        </div>
+        <!-- Central Modal Small -->
+
+    </main>
+    <!--Main layout-->
+
+    <!--Footer-->
+    <footer class="page-footer text-center font-small gris-experta mt-4 wow fadeIn">
+
+        <!--Call to action-->
+        <div class="pt-4">
+          FOOTER TEXT
+        </div>
+        <!--/.Call to action-->
+
+
+        <!--Copyright-->
+        <div class="footer-copyright py-3">
+            © 2018 Copyright
+        </div>
+        <!--/.Copyright-->
+
+    </footer>
+    <!--/.Footer-->
+
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <!-- Initializations -->
+    <script type="text/javascript">
+
+        //TODO ESTO PASARLO JS APARTE, CREARLO COMO MODULO
+
+        $(document).ready(function () {
+
+            document.getElementById("loader").style.display = "none";
+            //tiene datos hardcodeados, para modo visualizacion, luego se quitaran, ver si con solo declarar el language aca basta
+          $('#dtBasic').DataTable({
+                dom:"<'row buttonrows'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
+			        "<'row'<'col-sm-12'tr>>" +
+			        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                //dom: 'Blfrtip',
+                buttons: [
+                    'excel'
+                ],
+                language: {
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    "search": "Buscar",
+                    "lengthMenu": "Mostrar _MENU_ registros",
+                    "infoEmpty": "Mostrando 0 a 0 de 0 registros",
+                    "emptyTable": "No hay registros en la tabla",
+                    "zeroRecords": "No se encontraron los registros buscados",
+                    paginate: {
+                        first:    '«',
+                        previous: '‹',
+                        next:     '›',
+                        last:     '»'
+                    },
+                    aria: {
+                        paginate: {
+                            first:    'Primero',
+                            previous: 'Anterior',
+                            next:     'Siguiente',
+                            last:     'Último'
+                        }
+                    }
+                },
+                "ordering": false
+            });
+          $('.dataTables_length').addClass('bs-select');
+        });
+        
+        function fileValidation(){
+            var fileInput = $("#inputGroupFile01");
+            var filePath = fileInput[0].value;
+            var allowedExtensions = /(\.xls|\.xlsx)$/i;
+            if(!allowedExtensions.exec(filePath)){
+                $("#modalStyle").removeClass("modal-notify modal-danger");
+                $("#modalStyle").addClass("modal-notify modal-warning");
+                $("#titleModal").html("Atención");
+                $("#bodyModal").html("Solo se permiten archivos con la siguiente extension: .xls/.xlsx");
+                $('#alertModal').modal()
+                fileInput.value = '';
+                return false;
+            }else{
+                document.getElementById("loader").style.display = "block";
+                $.ajax({
+                    type: 'GET',
+                    url: "WebServices/testwebService.asmx/Methodname",
+                    contentType: "application/json; charset=utf-8",
+                    data: { value: "string" },
+                    dataType: 'json',
+                    success: function (data) {
+                        document.getElementById("loader").style.display = "none";
+                        $('#dtBasic').DataTable({
+                            data: data,
+                            "ordering": false,
+                            "createdRow": function( row, data, dataIndex ) {
+                                /*
+                                if ( data[10] == "A" ) {
+                                $(row).addClass( 'important' );
+                                }
+                                */
+                            }
+                        });
+                    },
+                    error: function (data) {
+                        document.getElementById("loader").style.display = "none";
+                        $("#modalStyle").removeClass("modal-notify modal-warning");                        
+                        $("#modalStyle").addClass("modal-notify modal-danger");
+                        $("#titleModal").html("Error");
+                        $("#bodyModal").html("Ocurrió un error en la comunicacion con el servicio, intente mas tarde");
+                        $('#alertModal').modal()
+                    }
+                });           
+            }
+        }  
+
+    </script>
+</body>
+
+</html>
