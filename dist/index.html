@@ -54,14 +54,14 @@
                       -->
                         
                         <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputFileCSV">
+                          <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputFileCSV" onchange="fileValidation()">
                           <label class="custom-file-label" for="inputFileCSV">Seleccione un archivo</label>
                         </div>
                       </div>
                 </div>
 
                 <div class="row mb-12 wow fadeIn">
-                    <button type="button" id="btnPredecir" class="btn btn-lg azul-experta col-lg-11 fa fa-upload fa-3x" onclick="fileValidation()"> Predecir</button>
+                    <button type="button" disabled="disabled" id="btnPredecir" class="btn btn-lg azul-experta col-lg-11 fa fa-upload fa-3x" onclick="predecir()"> Predecir</button>
                 </div>
 
                 <div id="loader"></div>
@@ -216,6 +216,40 @@
           $('.dataTables_length').addClass('bs-select');
         });
         
+function predecir(){
+    document.getElementById("loader").style.display = "block";
+    $.ajax({
+        type: 'POST',
+        url: "http://localhost:8080/api-pap-0.0.1/siniestros/predict",
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        success: function (data) {
+            document.getElementById("loader").style.display = "none";
+            $("#btnPredecir").attr("disabled","disabled");
+            $('#dtBasic').DataTable({
+                data: data,
+                "ordering": false,
+                "createdRow": function( row, data, dataIndex ) {
+                    //funcion ejemplo para ponerle clase de color segun porcentaje
+                    /*
+                    if ( data[10] == "A" ) {
+                    $(row).addClass( 'important' );
+                    }
+                    */
+                }
+            });
+        },
+        error: function (data) {
+            document.getElementById("loader").style.display = "none";
+            $("#modalStyle").removeClass("modal-notify modal-warning");                        
+            $("#modalStyle").addClass("modal-notify modal-danger");
+            $("#titleModal").html("Error");
+            $("#bodyModal").html("Ocurrió un error en la comunicacion con el servicio, intente mas tarde");
+            $('#alertModal').modal()
+        }
+    });
+}
+
         function fileValidation(){
             var fileInput = $("#inputGroupFile01");
             var filePath = fileInput[0].value;
@@ -229,29 +263,16 @@
                 fileInput.value = '';
                 return false;
             }else{
-                document.getElementById("loader").style.display = "block";
                 $.ajax({
-                    type: 'GET',
-                    url: "WebServices/testwebService.asmx/Methodname",
-                    contentType: "application/json; charset=utf-8",
-                    data: { value: "string" },
+                    type: 'POST',
+                    url: "http://localhost:8080/api-pap-0.0.1/siniestros/upload",
+                    contentType: "multipart/form-data",
+                    data: { file: filePath },
                     dataType: 'json',
                     success: function (data) {
-                        document.getElementById("loader").style.display = "none";
-                        $('#dtBasic').DataTable({
-                            data: data,
-                            "ordering": false,
-                            "createdRow": function( row, data, dataIndex ) {
-                                /*
-                                if ( data[10] == "A" ) {
-                                $(row).addClass( 'important' );
-                                }
-                                */
-                            }
-                        });
+                        $("#btnPredecir").removeAttr("disabled");
                     },
                     error: function (data) {
-                        document.getElementById("loader").style.display = "none";
                         $("#modalStyle").removeClass("modal-notify modal-warning");                        
                         $("#modalStyle").addClass("modal-notify modal-danger");
                         $("#titleModal").html("Error");
