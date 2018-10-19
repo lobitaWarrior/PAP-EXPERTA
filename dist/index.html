@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -42,7 +42,6 @@
     <!--Main layout-->
     <main class="mt-5 pt-5">
         <div class="container">
-
             <section class="text-center">
 
                 <div class="row mb-12 wow fadeIn">
@@ -230,23 +229,66 @@
                 return false;
             }else{
                 document.getElementById("loader").style.display = "block";
+
+                var data = new FormData();
+                jQuery.each(jQuery('#inputGroupFile01')[0].files, function (i, file) {
+                    data.append("file",file);
+                })
+
+                //TO-DO: HACELO BONITO, MEZCLARLE LOS MENSAJES QUE TENGO ABAJO
+                //TO-DO: SE VA A HACER EN UN SOLO METODO, NO HACER DOS CALL AL WS
+
+                jQuery.ajax({
+                    url: 'http://localhost:8080/siniestros/upload/',
+                    data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    success: function (data) {
+                        jQuery.ajax({
+                            url: 'http://localhost:8080/siniestros/predict/',
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            type: 'POST',
+                            success: function (data) {
+                                console.log(data);
+                            },
+                            error: function (data) {
+                                console.log(data);
+                            }
+                        });
+
+                    },
+                    error: function (data) {
+                        alert("error");
+                    }
+                });
+
+                /*
                 $.ajax({
-                    type: 'GET',
-                    url: "WebServices/testwebService.asmx/Methodname",
-                    contentType: "application/json; charset=utf-8",
-                    data: { value: "string" },
+                    method: "POST",
+                    url: "http://localhost:8080/siniestros/upload/",
+                    contentType: "multipart/form-data",
+                    data: $("#inputGroupFile01")[0].files[0],
+                    crossDomain: true,
                     dataType: 'json',
+                    processData: false,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost:59708");
+                    },
                     success: function (data) {
                         document.getElementById("loader").style.display = "none";
                         $('#dtBasic').DataTable({
                             data: data,
                             "ordering": false,
                             "createdRow": function( row, data, dataIndex ) {
-                                /*
-                                if ( data[10] == "A" ) {
-                                $(row).addClass( 'important' );
-                                }
-                                */
+                                
+                                //if ( data[10] == "A" ) {
+                                //$(row).addClass( 'important' );
+                               // }
+                                
                             }
                         });
                     },
@@ -258,7 +300,7 @@
                         $("#bodyModal").html("Ocurrió un error en la comunicacion con el servicio, intente mas tarde");
                         $('#alertModal').modal()
                     }
-                });           
+                });    */       
             }
         }  
 
