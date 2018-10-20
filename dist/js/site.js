@@ -25,7 +25,7 @@ function fileValidation(){
         })
 
         jQuery.ajax({
-            url: 'http://localhost:8080/accidents/predict/',
+            url: 'rest/accidents/predict/',
             data: data,
             cache: false,
             contentType: false,
