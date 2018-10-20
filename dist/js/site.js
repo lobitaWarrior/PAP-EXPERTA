@@ -1,6 +1,6 @@
 
 $(document).ready(function () {
-
+    $("#rowGrid").css("visibility","hidden");
     document.getElementById("loader").style.display = "none";
 });
 
@@ -33,7 +33,7 @@ function fileValidation(){
             type: 'POST',
             success: function (data) {
                 var odata=transformarJSON(data);
-
+                $("#rowGrid").css("visibility","visible");
                 document.getElementById("loader").style.display = "none";
                 $('#dtBasic').DataTable({
                     data: odata,
