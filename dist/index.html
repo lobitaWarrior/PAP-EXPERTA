@@ -41,27 +41,29 @@
     <!--Main Navigation-->
 
     <!--Main layout-->
-    <main class="mt-5 pt-5">
+    <main class="mt-1 pt-3">
         <div class="container">
-            <section class="text-center">
+            <section>
 
                 <div class="row mb-12 wow fadeIn">
-                    <div class="input-group mb-3">
+                    <div class="col-md-10 col-lg-10">
                       <!--
                         <div class="input-group-prepend">
                           <span class="input-group-text btn-dark-green" id="inputFileCSV">Cargar</span>
                         </div>
                       -->
-                        
                         <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputFileCSV">
-                          <label class="custom-file-label" for="inputFileCSV">Seleccione un archivo</label>
+                          <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputFileCSV" data-toggle="tooltip" data-placement="bottom">
+                          <label class="custom-file-label" for="inputFileCSV" data-toggle="tooltip" data-placement="bottom">Seleccione un archivo</label>
                         </div>
                       </div>
+                      <div class="col-md-2 col-lg-2">
+                        <button type="button" id="btnPredecir" class="btn azul-experta" onclick="fileValidation()" data-toggle="tooltip" data-placement="bottom" title="Predecir">Predecir <i class="fa fa-magic"></i></button>
+                    </div>
                 </div>
 
                 <div class="row mb-12 wow fadeIn">
-                    <button type="button" id="btnPredecir" class="btn btn-lg azul-experta col-lg-11 fa fa-upload fa-3x" onclick="fileValidation()"> Predecir</button>
+                   
                 </div>
 
                 <div id="loader"></div>

@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $("#rowGrid").css("visibility","hidden");
     document.getElementById("loader").style.display = "none";
+    $('[data-toggle="tooltip"]').tooltip();
 });
 
 function fileValidation(){
@@ -23,14 +24,17 @@ function fileValidation(){
             data.append("file",file);
         })
 
+        //  rest/accidents/predict/
+        //  http://localhost:8080/rest/accidents/predict/
         jQuery.ajax({
-            url: 'rest/accidents/predict/',
+            url: 'http://localhost:8080/rest/accidents/predict/',
             data: data,
             cache: false,
             contentType: false,
             processData: false,
             type: 'POST',
             success: function (data) {
+                $('[data-toggle="tooltip"]').tooltip();
                 var odata=transformarJSON(data);
                 $("#rowGrid").css("visibility","visible");
                 document.getElementById("loader").style.display = "none";
@@ -39,20 +43,33 @@ function fileValidation(){
                     destroy: true,
                     columns: [
                         { data: 'siniestroSeveridad' },
-                        { data: 'siniestroCausa' },
+                        { data: 'siniestroCausa'},
                         { data: 'siniestroParteCuerpo' },
                         { data: 'siniestroPorcentajeJuicio' }
-                    ],
-                    columnDefs: [{
+                    ],columnDefs: [{
+                        targets: 1,
+                        render:function(data, type, row) {
+                        if (type === 'display' && data != null) {
+                          data = data.replace(/<(?:.|\\n)*?>/gm, '');
+                          if(data.length > 80) {
+                            return '<span class="show-ellipsis" data-toggle="tooltip" data-placement="bottom" title="'+ data +'">' + data.substr(0, 80) + '</span><span class="no-show">' + data.substr(80) + '</span>';
+                          } else {
+                            return data;
+                          }
+                        } else {
+                          return data;
+                        }
+                      }
+                    },{
                         targets: [3],
                         render: $.fn.dataTable.render.number(',', '.', 2)
-                      }],
+                    }],
                     dom:"<'row buttonrows'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                     buttons: [
                         {
-                            extend:'excel',text:'Exportar resultados'
+                            extend:'excel',text:'<span data-toggle="tooltip" data-placement="bottom" title="EXPORTAR RESULTADOS">EXPORTAR RESULTADOS </span><span class="fa fa-download"></span>'
                         }
                         
                     ],

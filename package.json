@@ -28,5 +28,8 @@
   "description": "simple page for accidents company",
   "keywords": [
     "pap"
-  ]
+  ],
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.4.2"
+  }
 }

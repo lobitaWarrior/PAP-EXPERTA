@@ -1,22 +1,51 @@
+/* TOOLTIP POPPER */
+
+.tooltip-inner {
+    max-width: 500px;
+    padding: .25rem .5rem;
+    color: #fff;
+    text-align: center;
+    background-color: #000;
+    border-radius: .25rem;
+}
+
 /* JQUERY DATATABLE */
+
+span.no-show{
+    display: none;
+}
+span.show-ellipsis:after{
+    content: "...";
+}
+
+table.dataTable td  {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
 .pagination .page-item.active .page-link {
-    background-color: #797a76 !important;
+    background-color: #00548B !important;
     color: #fff;
 }
 
 .dt-button {
-    background-color: #008E45;
-    border-color: #008E45;
+    background-color: #00548B;
+    border-color: #00548B;
+    font-size: .81rem;
     -webkit-appearance: button-bevel !important;
-    border-radius: 5px;
+    border-radius: .125rem;
     color: white;
     cursor: pointer;
     margin-top: 1% !important;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    padding: .84rem 2.14rem;
 }
 
 .row.buttonrows{
     padding-top: 5%;
     color:#008E45;
+    text-align: center !important;
 }
 
 .dataTables_info{
@@ -69,15 +98,15 @@
     display: block;
     height: 2.25rem;
     color:white !important;
-    background-color: #858386;
-    border-left: 1px solid #797a76;
+    background-color: #00548B;
+    border-left: 1px solid #00548B;
     border-radius: 0 .25rem .25rem 0;
     font-weight: 400;
 }
 
 .custom-file-label, .custom-file-label::after {
     position: absolute;
-    padding: .375rem .75rem;
+    padding: 0.375rem 1.75rem;
     line-height: 1.5;
     color: #008E45;
     top: 0;
@@ -86,6 +115,16 @@
 
 #btnPredecir{
     margin:auto !important;
+}
+
+.custom-file {
+    position: relative;
+    display: inline !important;
+}
+.custom-file-label::after {
+    /*content: "Cargar archivo" !important;*/
+    content: "\f093" !important;
+    font-family:FontAwesome !important;
 }
 
 /* LOADER */
