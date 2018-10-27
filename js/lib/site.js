@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     $("#rowGrid").css("visibility","hidden");
     document.getElementById("loader").style.display = "none";
@@ -44,11 +43,18 @@ function fileValidation(){
                         { data: 'siniestroParteCuerpo' },
                         { data: 'siniestroPorcentajeJuicio' }
                     ],
+                    columnDefs: [{
+                        targets: [3],
+                        render: $.fn.dataTable.render.number(',', '.', 2)
+                      }],
                     dom:"<'row buttonrows'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                     buttons: [
-                        'excel'
+                        {
+                            extend:'excel',text:'Exportar resultados'
+                        }
+                        
                     ],
                     language: {
                         "info": "Mostrando _START_ a _END_ de _TOTAL_ Registros",
@@ -72,14 +78,15 @@ function fileValidation(){
                             }
                         }
                     },
-                    "ordering": false,
+                    "order":[3,'desc'],
+                    //"ordering": false,
                     "createdRow": function( row, data, dataIndex ) {
                         if ( parseFloat(data.siniestroPorcentajeJuicio) <= 45 ) {
-                            $(row).addClass( 'rowGood' );
+                            $(row.childNodes[3]).addClass( 'rowGood' );
                         }else if( parseFloat(data.siniestroPorcentajeJuicio) > 45 && parseFloat(data.siniestroPorcentajeJuicio) < 60){
-                            $(row).addClass( 'rowWarning' );
+                            $(row.childNodes[3]).addClass( 'rowWarning' );
                         }else{
-                            $(row).addClass( 'rowDanger' );
+                            $(row.childNodes[3]).addClass( 'rowDanger' );
                         } 
                         
                     }
@@ -87,7 +94,6 @@ function fileValidation(){
                 $('.dataTables_length').addClass('bs-select');
             },
             error: function (data) {
-                console.log("error ", data);
                 document.getElementById("loader").style.display = "none";
                 $("#modalStyle").removeClass("modal-notify modal-warning");                        
                 $("#modalStyle").addClass("modal-notify modal-danger");

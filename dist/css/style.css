@@ -28,21 +28,33 @@
 }
 
 .rowGood{
-    color:#28a745;
+    color:white;
+    background-color: #1b5e20;
 }
 .rowWarning{
-    color:#ff8f00;
+    color:white;
+    background-color:#ff8f00;
 }
 .rowWarning td{
     font-weight: 500;
 }
 .rowDanger{
-    color:red;
+    color:white;
+    background-color: #b71c1c;
 }
 .rowDanger td{
     font-weight: bold;
 }
 
+.rowGood:hover td{
+    background-color: #388e3c !important;
+}
+.rowWarning:hover td{
+    background-color: #ffa000 !important;
+}
+.rowDanger:hover td{
+    background-color: #d32f2f !important;
+}
 /* LAYOUT BASIC */
 .navbar {
     box-shadow: 0 2px 5px 0 #c6e2d1, 0 2px 10px 0 rgba(12, 12, 12, 0.12);
