@@ -27,20 +27,19 @@ function fileValidation(){
         //  rest/accidents/predict/
         //  http://localhost:8080/rest/accidents/predict/
         jQuery.ajax({
-            url: 'http://localhost:8080/rest/accidents/predict/',
+            url: 'rest/accidents/predict/',
             data: data,
             cache: false,
             contentType: false,
             processData: false,
             type: 'POST',
             success: function (data) {
-                console.log(data);
-                $('[data-toggle="tooltip"]').tooltip();
                 var odata=TransformarJSON(data);
                 $("#rowGrid").css("visibility","visible");
                 document.getElementById("loader").style.display = "none";
                 ArmarTable(odata);
                 ArmarPieChart(odata);
+                $('[data-toggle="tooltip"]').tooltip();
             },
             error: function (data) {
                 document.getElementById("loader").style.display = "none";
@@ -49,22 +48,6 @@ function fileValidation(){
                 $("#titleModal").html("Error");
                 $("#bodyModal").html("Ocurrió un error en la comunicacion con el servicio, intente mas tarde");
                 $('#alertModal').modal()
-
-                //SOLO PARA PRUEBA
-                /*
-                data={"_accidents":[{"accident":
-                    {"id":"2","siniestroSeveridad":"Leve","siniestroCausa":"Injuria Punzo-Cortante O Contusa Involuntaria","siniestroParteCuerpo":"Dedos De Las Manos","siniestradoDescUltimoDX":"Herida Punzante Con Riesgo Biologico En Estudio","siniestroCircunstancia":"Realizando Tarea Habitual","siniestroFKT":"0","siniestroAltaMedica":"1","siniestroDiagnostico":"1","siniestroCirugia":"0","siniestroEstudios":"0","siniestroPeriodo":"201601","siniestroPrestadorProvincia":"Capital Federal","siniestroCanalIngreso":"DA","siniestroCaseSML":"Dllano","siniestroCaseSupervisor":"Alvarez_sup","siniestroPrestador":"Cemic","empresaCP":"1425","empresaProvincia":"0","siniestradoNacionalidad":"0","siniestradoCP":"1095","siniestradoSexo":"27","siniestradoFhNacimiento":"1901-01-01","tipoPoliza":"RG","localidadPoliza":"Capital Federal"},
-                    "inferredValue":"73,04"},
-                    {"accident":{"id":"3","siniestroSeveridad":"Leve","siniestroCausa":"Contacto Con Fuego","siniestroParteCuerpo":"Pierna","siniestradoDescUltimoDX":"Quemadura Cadera Y Minf 1er Grado Exc Tob/Pie Sup Hasta 10%","siniestroCircunstancia":"Realizando Tarea Habitual","siniestroFKT":"0","siniestroAltaMedica":"1","siniestroDiagnostico":"1","siniestroCirugia":"0","siniestroEstudios":"0","siniestroPeriodo":"201601","siniestroPrestadorProvincia":"Capital Federal","siniestroCanalIngreso":"DA","siniestroCaseSML":"Lsalvatierra","siniestroCaseSupervisor":"Dgonza_sup","siniestroPrestador":"Cemic","empresaCP":"1425","empresaProvincia":"0","siniestradoNacionalidad":"12","siniestradoCP":"0","siniestradoSexo":"27","siniestradoFhNacimiento":"1901-01-01","tipoPoliza":"RG","localidadPoliza":"Capital Federal"},
-                    "inferredValue":"44,56"},
-                    {"accident":{"id":"5","siniestroSeveridad":"Moderado","siniestroCausa":"Contacto Con Materiales Calientes O Incandescentes","siniestroParteCuerpo":"Mano (Con Excepcion De Los Dedos Solos)","siniestradoDescUltimoDX":"Quemadura Muneca Y Mano,1 Grado Sup Hasta 10%","siniestroCircunstancia":"Realizando Tarea Habitual","siniestroFKT":"0","siniestroAltaMedica":"1","siniestroDiagnostico":"1","siniestroCirugia":"0","siniestroEstudios":"0","siniestroPeriodo":"201601","siniestroPrestadorProvincia":"Santa Fe","siniestroCanalIngreso":"DE","siniestroCaseSML":"Aruiz","siniestroCaseSupervisor":"Flamma","siniestroPrestador":"Mapaci Laboral S.A.","empresaCP":"2000","empresaProvincia":"12","siniestradoNacionalidad":"0","siniestradoCP":"0","siniestradoSexo":"27","siniestradoFhNacimiento":"1901-01-01","tipoPoliza":"RG","localidadPoliza":"Rosario"},"inferredValue":"41,29"}]};
-                $('[data-toggle="tooltip"]').tooltip();
-                var odata=TransformarJSON(data);
-                $("#rowGrid").css("visibility","visible");
-                document.getElementById("loader").style.display = "none";
-                ArmarTable(odata);
-                ArmarPieChart(odata);
-                */
             }
         }); 
     }
@@ -79,9 +62,12 @@ function ArmarTable(odata){
             { data: 'siniestroSeveridad' },
             { data: 'siniestroCausa'},
             { data: 'siniestroParteCuerpo' },
-            { data: 'siniestroPorcentajeJuicio' }
+            { data: 'siniestroPrestador' },
+            { data: 'siniestroTipoPoliza' },
+            { data: 'siniestroPorcentajeJuicio' },
+            { data: 'siniestroTieneJuicio' }
         ],columnDefs: [{
-            targets: 2,
+            targets: 2,//CAUSA
             render:function(data, type, row) {
             if (type === 'display' && data != null) {
               data = data.replace(/<(?:.|\\n)*?>/gm, '');
@@ -95,7 +81,7 @@ function ArmarTable(odata){
             }
           }
         },{
-            targets: [4],
+            targets: [6],//%JUICIO
             render: $.fn.dataTable.render.number(',', '.', 2)
         }],
         dom:"<'row buttonrows'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
@@ -129,7 +115,7 @@ function ArmarTable(odata){
                 }
             }
         },
-        "order":[4,'desc'],
+        "order":[6,'desc'],//%JUICIO
         //"ordering": false,
         "createdRow": function( row, data, dataIndex ) {
             if ( parseFloat(data.siniestroPorcentajeJuicio) <= 30 ) {
@@ -194,13 +180,19 @@ function TransformarJSON(jsonarray){
         siniestroSeveridad:"",
         siniestroCausa:"",
         siniestroParteCuerpo:"",
-        siniestroPorcentajeJuicio:""
+        siniestroPorcentajeJuicio:"",
+        siniestroTieneJuicio:"",
+        siniestroPrestador:"",
+        siniestroTipoPoliza:""
         }
         object.id=jsonarray._accidents[index].accident.id;
         object.siniestroCausa=jsonarray._accidents[index].accident.siniestroCausa;
         object.siniestroParteCuerpo=jsonarray._accidents[index].accident.siniestroParteCuerpo;
         object.siniestroSeveridad=jsonarray._accidents[index].accident.siniestroSeveridad;
         object.siniestroPorcentajeJuicio=jsonarray._accidents[index].inferredValue;
+        object.siniestroTieneJuicio=jsonarray._accidents[index].accident.juicioTiene;
+        object.siniestroPrestador=jsonarray._accidents[index].accident.siniestroPrestador;
+        object.siniestroTipoPoliza=jsonarray._accidents[index].accident.tipoPoliza;
         array.push(object);
     }
     return array;
