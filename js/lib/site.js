@@ -4,7 +4,18 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
 
-function fileValidation(){
+function ValidateSize(file) {
+    var FileSize = file.files[0].size / 1024 / 1024; // in MB
+    if (FileSize > 2.5) {
+        $("#modalStyle").removeClass("modal-notify modal-danger");
+        $("#modalStyle").addClass("modal-notify modal-warning");
+        $("#titleModal").html("Atención");
+        $("#bodyModal").html("El tamaño del archivo es demasiado grande, máximo tamaño posible: 2.5 MB");
+        $('#alertModal').modal()
+    } 
+}
+
+function FileValidation(){
     var fileInput = $("#inputGroupFile01");
     var filePath = fileInput[0].value;
     var allowedExtensions = /(\.xls|\.xlsx)$/i;
@@ -17,12 +28,18 @@ function fileValidation(){
         fileInput.value = '';
         return false;
     }else{
-        document.getElementById("loader").style.display = "block";
+        Predict();
+    }
+}  
 
-        var data = new FormData();
-        jQuery.each(jQuery('#inputGroupFile01')[0].files, function (i, file) {
-            data.append("file",file);
-        })
+function Predict(){
+    
+    document.getElementById("loader").style.display = "block";
+
+    var data = new FormData();
+    jQuery.each(jQuery('#inputGroupFile01')[0].files, function (i, file) {
+        data.append("file",file);
+    })
 
         //  rest/accidents/predict/
         //  http://localhost:8080/rest/accidents/predict/
@@ -50,8 +67,7 @@ function fileValidation(){
                 $('#alertModal').modal()
             }
         }); 
-    }
-}  
+}
 
 function ArmarTable(odata){
     $('#dtBasic').DataTable({
