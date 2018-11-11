@@ -2,6 +2,8 @@ $(document).ready(function () {
     $("#rowGrid").css("visibility","hidden");
     document.getElementById("loader").style.display = "none";
     $('[data-toggle="tooltip"]').tooltip();
+    var lowMinRange=0,lowMaxRange=0,MediumMinRange=0,MediumMaxRange=0,HighMinRange=0,HighMaxRange=0;
+    var captionLow="",captionMedium="",captionHigh="";
 });
 
 function ValidateSize(file) {
@@ -64,7 +66,7 @@ function Predict(){
                 $("#modalStyle").addClass("modal-notify modal-danger");
                 $("#titleModal").html("Error");
                 $("#bodyModal").html("Ocurrió un error en la comunicacion con el servicio, intente mas tarde");
-                $('#alertModal').modal()
+                $('#alertModal').modal();
             }
         }); 
 }
@@ -76,14 +78,14 @@ function ArmarTable(odata){
         columns: [
             { data: 'id' },
             { data: 'siniestroSeveridad' },
-            { data: 'siniestroCausa'},
+            { data: 'siniestroDiagnostico'},
             { data: 'siniestroParteCuerpo' },
             { data: 'siniestroPrestador' },
-            { data: 'siniestroTipoPoliza' },
+            { data: 'siniestroCaseSML' },
             { data: 'siniestroPorcentajeJuicio' },
             { data: 'siniestroTieneJuicio' }
         ],columnDefs: [{
-            targets: 2,//CAUSA
+            targets: 2,//DIAGNOSTICO
             render:function(data, type, row) {
             if (type === 'display' && data != null) {
               data = data.replace(/<(?:.|\\n)*?>/gm, '');
@@ -98,7 +100,7 @@ function ArmarTable(odata){
           }
         },{
             targets: [6],//%JUICIO
-            render: $.fn.dataTable.render.number(',', '.', 2)
+            //render: $.fn.dataTable.render.number(',', '.', 2)
         }],
         dom:"<'row buttonrows'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
         "<'row'<'col-sm-12'tr>>" +
@@ -134,9 +136,9 @@ function ArmarTable(odata){
         "order":[6,'desc'],//%JUICIO
         //"ordering": false,
         "createdRow": function( row, data, dataIndex ) {
-            if ( parseFloat(data.siniestroPorcentajeJuicio) <= 30 ) {
+            if ( parseFloat(data.siniestroPorcentajeJuicio) <= lowMaxRange ) {
                 $(row).addClass( 'rowGood' );
-            }else if( parseFloat(data.siniestroPorcentajeJuicio) > 30 && parseFloat(data.siniestroPorcentajeJuicio) < 55){
+            }else if( parseFloat(data.siniestroPorcentajeJuicio) > MediumMinRange && parseFloat(data.siniestroPorcentajeJuicio) < MediumMaxRange){
                 $(row).addClass( 'rowWarning' );
             }else{
                 $(row).addClass( 'rowDanger' );
@@ -153,9 +155,9 @@ function ArmarPieChart(odata){
 
     for (var index = 0; index < odata.length; index++) {
 
-        if(parseFloat(odata[index].siniestroPorcentajeJuicio)<= 30){
+        if(parseFloat(odata[index].siniestroPorcentajeJuicio)<= lowMaxRange){
             array[2]++;
-        }else if(parseFloat(odata[index].siniestroPorcentajeJuicio) > 30 && parseFloat(odata[index].siniestroPorcentajeJuicio)< 55){
+        }else if(parseFloat(odata[index].siniestroPorcentajeJuicio) > MediumMinRange && parseFloat(odata[index].siniestroPorcentajeJuicio)< MediumMaxRange){
             array[1]++;
         }else{
             array[0]++;
@@ -166,9 +168,9 @@ function ArmarPieChart(odata){
     var ctx = document.getElementById("myChart");
     var Data = {
         labels: [
-            "Rojo",
-            "Naranja",
-            "Verde"
+            captionHigh,
+            captionMedium,
+            captionLow
         ],
         datasets: [
             {
@@ -189,27 +191,42 @@ function ArmarPieChart(odata){
 function TransformarJSON(jsonarray){
     var array=[];
 
-    for (var index = 0; index < jsonarray._accidents.length; index++) {
+    //armo datasource de la grid
+    for (var index = 0; index < jsonarray.accidents.length; index++) {
 
         var object={
         id:"",
         siniestroSeveridad:"",
-        siniestroCausa:"",
+        siniestroDiagnostico:"",
         siniestroParteCuerpo:"",
         siniestroPorcentajeJuicio:"",
         siniestroTieneJuicio:"",
         siniestroPrestador:"",
-        siniestroTipoPoliza:""
+        siniestroCaseSML:""
         }
-        object.id=jsonarray._accidents[index].accident.id;
-        object.siniestroCausa=jsonarray._accidents[index].accident.siniestroCausa;
-        object.siniestroParteCuerpo=jsonarray._accidents[index].accident.siniestroParteCuerpo;
-        object.siniestroSeveridad=jsonarray._accidents[index].accident.siniestroSeveridad;
-        object.siniestroPorcentajeJuicio=jsonarray._accidents[index].inferredValue;
-        object.siniestroTieneJuicio=jsonarray._accidents[index].accident.juicioTiene;
-        object.siniestroPrestador=jsonarray._accidents[index].accident.siniestroPrestador;
-        object.siniestroTipoPoliza=jsonarray._accidents[index].accident.tipoPoliza;
+        object.id=jsonarray.accidents[index].accident.id;
+        object.siniestroDiagnostico=jsonarray.accidents[index].accident.siniestroDiagnostico;
+        object.siniestroParteCuerpo=jsonarray.accidents[index].accident.siniestroParteCuerpo;
+        object.siniestroSeveridad=jsonarray.accidents[index].accident.siniestroSeveridad;
+        object.siniestroPorcentajeJuicio=Math.round(parseFloat(jsonarray.accidents[index].inferredValue)) + "%";
+        object.siniestroTieneJuicio=jsonarray.accidents[index].accident.juicioTiene;
+        object.siniestroPrestador=jsonarray.accidents[index].accident.siniestroPrestador;
+        object.siniestroCaseSML=jsonarray.accidents[index].accident.siniestroCaseSML;
         array.push(object);
     }
+    //lleno variables globales
+    //LOW
+    lowMinRange=jsonarray.ranges.low.min;
+    lowMaxRange=jsonarray.ranges.low.max;
+    captionLow=jsonarray.ranges.low.caption;
+    //MEDIUM
+    MediumMinRange=jsonarray.ranges.middle.min;
+    MediumMaxRange=jsonarray.ranges.middle.max;
+    captionMedium=jsonarray.ranges.middle.caption;
+    //HIGH
+    HighMinRangeMinRange=jsonarray.ranges.critical.min;
+    HighMaxRangeMaxRange=jsonarray.ranges.critical.max;
+    captionHigh=jsonarray.ranges.critical.caption;
+
     return array;
 }
