@@ -190,7 +190,6 @@ function ArmarPieChart(odata){
 
 function TransformarJSON(jsonarray){
     var array=[];
-
     //armo datasource de la grid
     for (var index = 0; index < jsonarray.accidents.length; index++) {
 
