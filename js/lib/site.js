@@ -176,9 +176,9 @@ function ArmarPieChart(odata){
             {
                 data: array,
                 backgroundColor: [
-                    "#b71c1c",
-                    '#ff8f00',
-                    "#1b5e20"
+                    "#e60000",
+                    '#f7931d',
+                    "#026937"
                 ]
             }]
     };  
