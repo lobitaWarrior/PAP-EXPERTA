@@ -78,14 +78,14 @@ function ArmarTable(odata){
         columns: [
             { data: 'id' },
             { data: 'siniestroSeveridad' },
-            { data: 'siniestroDiagnostico'},
+            { data: 'siniestradoDescUltimoDX'},
             { data: 'siniestroParteCuerpo' },
             { data: 'siniestroPrestador' },
             { data: 'siniestroCaseSML' },
-            { data: 'siniestroPorcentajeJuicio' },
-            { data: 'siniestroTieneJuicio' }
+            { data: 'siniestroPorcentajeJuicio' }
+            //{ data: 'siniestroTieneJuicio' }
         ],columnDefs: [{
-            targets: 2,//DIAGNOSTICO
+            targets: 2,//siniestradoDescUltimoDX
             render:function(data, type, row) {
             if (type === 'display' && data != null) {
               data = data.replace(/<(?:.|\\n)*?>/gm, '');
@@ -196,19 +196,19 @@ function TransformarJSON(jsonarray){
         var object={
         id:"",
         siniestroSeveridad:"",
-        siniestroDiagnostico:"",
+        siniestradoDescUltimoDX:"",
         siniestroParteCuerpo:"",
         siniestroPorcentajeJuicio:"",
-        siniestroTieneJuicio:"",
+        //siniestroTieneJuicio:"",
         siniestroPrestador:"",
         siniestroCaseSML:""
         }
         object.id=jsonarray.accidents[index].accident.id;
-        object.siniestroDiagnostico=jsonarray.accidents[index].accident.siniestroDiagnostico;
+        object.siniestradoDescUltimoDX=jsonarray.accidents[index].accident.siniestradoDescUltimoDX;
         object.siniestroParteCuerpo=jsonarray.accidents[index].accident.siniestroParteCuerpo;
         object.siniestroSeveridad=jsonarray.accidents[index].accident.siniestroSeveridad;
         object.siniestroPorcentajeJuicio=Math.round(parseFloat(jsonarray.accidents[index].inferredValue)) + "%";
-        object.siniestroTieneJuicio=jsonarray.accidents[index].accident.juicioTiene;
+        //object.siniestroTieneJuicio=jsonarray.accidents[index].accident.juicioTiene;
         object.siniestroPrestador=jsonarray.accidents[index].accident.siniestroPrestador;
         object.siniestroCaseSML=jsonarray.accidents[index].accident.siniestroCaseSML;
         array.push(object);
