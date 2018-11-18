@@ -65,7 +65,7 @@ function Predict(){
                 $("#modalStyle").removeClass("modal-notify modal-warning");                        
                 $("#modalStyle").addClass("modal-notify modal-danger");
                 $("#titleModal").html("Error");
-                $("#bodyModal").html("Ocurrió un error en la comunicacion con el servicio, intente mas tarde");
+                $("#bodyModal").html(data.responseJSON.friendlyError);
                 $('#alertModal').modal();
             }
         }); 
