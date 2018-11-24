@@ -62,6 +62,7 @@ function Predict(){
             },
             error: function (data) {
                 document.getElementById("loader").style.display = "none";
+
                 $("#modalStyle").removeClass("modal-notify modal-warning");                        
                 $("#modalStyle").addClass("modal-notify modal-danger");
                 $("#titleModal").html("Error");
@@ -176,17 +177,20 @@ function ArmarPieChart(odata){
             {
                 data: array,
                 backgroundColor: [
-                    "#e60000",
-                    '#f7931d',
+                    "#e86c2e",
+                    '#e2bf50',
                     "#026937"
                 ]
             }]
     };  
+    if (myPieChart != undefined || myPieChart !=null) {
+        myPieChart.destroy();
+    }
     var myPieChart = new Chart(ctx,{
         type: 'pie',
         data: Data
     });
-}
+} 
 
 function TransformarJSON(jsonarray){
     var array=[];

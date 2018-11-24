@@ -54,7 +54,7 @@ table.dataTable td  {
 
 #dtBasic_wrapper{
     width: 100% !important;
-}
+} 
 
 .rowGood{
     color:white;
@@ -62,14 +62,14 @@ table.dataTable td  {
 }
 .rowWarning{
     color:white;
-    background-color:#f7931d;
+    background-color:#e2bf50;
 }
 .rowWarning td{
     font-weight: 500;
 }
 .rowDanger{
     color:white;
-    background-color: #e60000 ;
+    background-color: #e86c2e ;
 }
 .rowDanger td{
     font-weight: bold;
@@ -79,10 +79,10 @@ table.dataTable td  {
     background-color: #619e82 !important;
 }
 .rowWarning:hover td{
-    background-color: #f9ab53 !important;
+    background-color: #ead284 !important;
 }
 .rowDanger:hover td{
-    background-color: #ff6666 !important;
+    background-color: #ec8957 !important;
 }
 /* LAYOUT BASIC */
 .navbar {
